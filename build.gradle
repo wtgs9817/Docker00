@@ -1,0 +1,49 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(18)
+	}
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+//JAR 파일을 만들 때 META-INF/MANIFEST.MF 파일이 중복으로 포함되는 에러가 발생
+//bootJar에 중복 파일 처리 전략을 추가하여 에러 해결
+tasks.named("bootJar") {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
